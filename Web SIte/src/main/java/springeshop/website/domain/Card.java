@@ -30,6 +30,6 @@ public class Card {
     @JoinTable(name = "card_products",
             joinColumns = @JoinColumn(name = "card_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
+    private List<Products> products;
 
 }

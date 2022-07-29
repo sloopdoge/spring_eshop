@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
@@ -21,9 +21,9 @@ public class User {
     @SequenceGenerator(name = SEQ_NAME, sequenceName = SEQ_NAME, allocationSize = 1)
     private Long id;
 
-    private String email;
-    private String phone;
     private String fullname;
+    private String email;
+    private BigDecimal phone;
     private String password;
     private boolean status;
 
@@ -33,4 +33,13 @@ public class User {
     @OneToOne(cascade = CascadeType.REMOVE)
     private Card card;
 
+    public User() {
+    }
+
+    public User(String fullname, String email, BigDecimal phone, String password) {
+        this.fullname = fullname;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+    }
 }

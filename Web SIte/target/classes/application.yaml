@@ -7,7 +7,7 @@ spring:
       ddl-auto: update
     show-sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/spring_shop
+    url: jdbc:postgresql://localhost:5432/spring_eshop
     username: postgres
     password: admin
 #  flyway:

@@ -50,17 +50,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/users/new").hasAnyAuthority(Role.ADMIN.name())
+                    .antMatchers("/about").hasAnyAuthority(Role.ADMIN.name())
                     .anyRequest().permitAll()
                 .and()
                     .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/auth")
+                    .usernameParameter("email")
                     .permitAll()
                 .and()
                     .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/").deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
+                .and()
+                    .rememberMe()
                 .and()
                 .csrf().disable();
     }
