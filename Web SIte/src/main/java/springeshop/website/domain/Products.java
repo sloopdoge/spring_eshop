@@ -23,8 +23,8 @@ public class Products {
     private Long id;
 
     private String title;
-    private BigDecimal price;
-    private Integer numbers;
+    private Double price;
+    private Long numbers;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "product_categories",
@@ -35,7 +35,7 @@ public class Products {
     public Products() {
     }
 
-    public Products(String title, BigDecimal price, Integer numbers) {
+    public Products(String title, Double price, Long numbers) {
         this.title = title;
         this.price = price;
         this.numbers = numbers;

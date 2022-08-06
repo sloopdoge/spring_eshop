@@ -11,12 +11,14 @@ import springeshop.website.domain.User;
 import springeshop.website.dto.UserDTO;
 import springeshop.website.repository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -27,6 +29,20 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<UserDTO> getAll() {
+        return userRepository.findAll().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
+    private UserDTO toDto(User user) {
+        return UserDTO.builder()
+                .email(user.getEmail())
+                .build();
+    }
+
+    @Override
+    @javax.transaction.Transactional
     public boolean save(UserDTO userDTO) {
         if (!Objects.equals(userDTO.getPassword(), userDTO.getMatchingPassword())) {
             throw new RuntimeException("Password is not equals");
@@ -42,6 +58,33 @@ public class UserServiceImpl implements UserService{
         return true;
     }
 
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public void updateProfile(UserDTO userDTO) {
+        User savedUser = userRepository.findUserByEmail(userDTO.getEmail());
+        if (savedUser == null) {
+            throw new RuntimeException("User not found with this email: " + userDTO.getEmail());
+        }
+
+        boolean changed = false;
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            savedUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            changed = true;
+        }
+        if (changed) {
+            userRepository.save(savedUser);
+        }
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

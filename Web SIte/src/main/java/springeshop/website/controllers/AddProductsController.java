@@ -19,13 +19,14 @@ public class AddProductsController {
     /* Controller for Page to add item in database*/
     @GetMapping("/products/add")
     public String products(Model model) {
+        model.addAttribute("title", "Add products");
         return "products_add";
     }
 
     @PostMapping("/products/add")
     public String productsAdd(@RequestParam(name = "title") String title,
-                          @RequestParam(name = "price") BigDecimal price,
-                          @RequestParam(name = "numbers") Integer numbers,
+                          @RequestParam(name = "price") Double price,
+                          @RequestParam(name = "numbers") Long numbers,
                           Model model) {
         Products item = new Products(title, price, numbers);
         productsRepository.save(item);

@@ -19,7 +19,14 @@ public class LoginController {
 
     @GetMapping("/login")
     public String newUser (Model model) {
+        model.addAttribute("title", "Login page");
         model.addAttribute("user", new UserDTO());
+        return "login";
+    }
+
+    @GetMapping("/login-error")
+    public String loginError (Model model) {
+        model.addAttribute("loginError", true);
         return "login";
     }
 }
